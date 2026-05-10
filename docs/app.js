@@ -3,7 +3,8 @@
 // Elements
 const unsupportedWarning = document.getElementById('unsupported-warning');
 const appContainer = document.getElementById('app-container');
-const roleRadios = document.querySelectorAll('input[name="role"]');
+const btnSender = document.getElementById('btn-sender');
+const btnReceiver = document.getElementById('btn-receiver');
 const baudDisplay = document.getElementById('baud-display');
 const connectBtn = document.getElementById('connect-btn');
 const connectionStatus = document.getElementById('connection-status');
@@ -29,6 +30,7 @@ let inputDone = null;
 let outputStream = null;
 let outputDone = null;
 let isConnected = false;
+let currentRole = 'sender';
 
 // Check Support
 if (!("serial" in navigator)) {
@@ -38,27 +40,32 @@ if (!("serial" in navigator)) {
 
 // Role Selection Logic
 function getRole() {
-    return document.querySelector('input[name="role"]:checked').value;
+    return currentRole;
 }
 
-function updateUiForRole() {
-    const role = getRole();
+function updateUiForRole(role) {
+    currentRole = role;
     if (role === 'sender') {
+        btnSender.classList.add('is-success');
+        btnReceiver.classList.remove('is-success');
         senderUi.classList.add('active-ui');
         senderUi.classList.remove('hidden');
         receiverUi.classList.add('hidden');
         receiverUi.classList.remove('active-ui');
-        baudDisplay.innerText = "BAUD: 9600 (Sender Default)";
+        baudDisplay.innerText = "BAUD: 9600 (Sender)";
     } else {
+        btnReceiver.classList.add('is-success');
+        btnSender.classList.remove('is-success');
         receiverUi.classList.add('active-ui');
         receiverUi.classList.remove('hidden');
         senderUi.classList.add('hidden');
         senderUi.classList.remove('active-ui');
-        baudDisplay.innerText = "BAUD: 300 (Receiver Default)";
+        baudDisplay.innerText = "BAUD: 300 (Receiver)";
     }
 }
 
-roleRadios.forEach(radio => radio.addEventListener('change', updateUiForRole));
+btnSender.addEventListener('click', () => updateUiForRole('sender'));
+btnReceiver.addEventListener('click', () => updateUiForRole('receiver'));
 
 // Utility to append text to logs and scroll
 function appendLog(element, text) {
@@ -81,6 +88,9 @@ async function connect() {
         
         await port.open({ baudRate: baudRate });
         
+        // This is crucial for Arduinos: assert DTR and RTS to initiate connection
+        await port.setSignals({ dataTerminalReady: true, requestToSend: true });
+        
         isConnected = true;
         connectBtn.innerText = "DISCONNECT";
         connectBtn.classList.replace('is-primary', 'is-error');
@@ -94,7 +104,8 @@ async function connect() {
         }
 
         // Disable role selection while connected
-        roleRadios.forEach(r => r.disabled = true);
+        btnSender.disabled = true;
+        btnReceiver.disabled = true;
 
         // Setup Output stream for sending
         const encoder = new TextEncoderStream();
@@ -132,7 +143,8 @@ async function disconnect() {
     connectBtn.classList.replace('is-error', 'is-primary');
     connectionStatus.innerText = "DISCONNECTED";
     connectionStatus.className = "status-disconnected";
-    roleRadios.forEach(r => r.disabled = false);
+    btnSender.disabled = false;
+    btnReceiver.disabled = false;
     
     const role = getRole();
     if (role === 'sender') {
