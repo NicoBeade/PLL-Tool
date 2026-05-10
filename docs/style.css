@@ -1,0 +1,191 @@
+/* style.css - Videogame retro aesthetic based on NES.css */
+
+body {
+    background-color: #2b2b2b;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#unsupported-warning {
+    background-color: #e74c3c;
+    color: white;
+    padding: 40px;
+    border: 4px solid #c0392b;
+    text-align: center;
+    max-width: 600px;
+    margin-top: 50px;
+}
+
+#unsupported-warning h1 {
+    color: #fff;
+}
+
+#app-container {
+    max-width: 900px;
+    width: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Header & Logos */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.pixel-logo {
+    height: 60px;
+    margin-bottom: 15px;
+    image-rendering: pixelated; /* Keeps it sharp */
+}
+
+h1 {
+    color: #4ade80; /* Retro green */
+    text-shadow: 2px 2px #000;
+}
+
+/* Role Selector */
+.role-selector {
+    margin-top: 20px;
+    background: #000;
+    display: inline-block;
+    padding: 15px;
+    border: 4px solid #fff;
+}
+
+.role-selector label {
+    margin: 0 10px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.role-selector input[type="radio"]:checked + label {
+    color: #fff;
+}
+
+.role-selector input[type="radio"] {
+    display: none;
+}
+
+.role-selector input[type="radio"]:checked::after {
+    content: ''; /* handled via JS class if needed, or simple css */
+}
+
+/* Connection Panel */
+.connection-panel {
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#baud-display {
+    color: #f1c40f;
+}
+
+.status-disconnected {
+    color: #e74c3c;
+}
+
+.status-connected {
+    color: #2ecc71;
+}
+
+/* Panels */
+.active-ui {
+    display: block;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    flex-grow: 1;
+}
+
+/* Logs Container */
+.logs-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.log-box {
+    flex: 1;
+    min-width: 300px;
+    background-color: #000;
+    min-height: 250px;
+}
+
+.main-rx {
+    min-height: 400px;
+}
+
+/* Terminal Text Area */
+.terminal-text {
+    height: 100%;
+    min-height: 200px;
+    overflow-y: auto;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    line-height: 1.5;
+    padding: 10px;
+    color: #2ecc71;
+    word-break: break-all;
+}
+
+.terminal-text.large-text {
+    font-size: 14px;
+    color: #4ade80;
+}
+
+/* Custom Scrollbar for terminal feel */
+.terminal-text::-webkit-scrollbar {
+    width: 10px;
+}
+.terminal-text::-webkit-scrollbar-track {
+    background: #000;
+    border-left: 2px solid #333;
+}
+.terminal-text::-webkit-scrollbar-thumb {
+    background: #4ade80;
+}
+
+#clear-btn {
+    margin-bottom: 15px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 4px dashed #555;
+    color: #888;
+    font-size: 10px;
+}
+
+.footer-logo {
+    height: 40px;
+    margin-bottom: 10px;
+    opacity: 0.7;
+}
+
+/* Overriding NES.css title dark background text color */
+.nes-container.is-dark.with-title > .title {
+    background-color: #000;
+    color: #fff;
+}

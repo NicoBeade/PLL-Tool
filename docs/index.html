@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSK Communicator - Retro Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="unsupported-warning" class="hidden">
+        <h1>SYSTEM ERROR</h1>
+        <p>Web Serial API not supported.</p>
+        <p>Please use a Chromium-based desktop browser like Google Chrome, Microsoft Edge, or Opera.</p>
+    </div>
+
+    <div id="app-container">
+        <header class="scanlines">
+            <img src="logo_itba_pxl.png" alt="ITBA Pixel Logo" class="pixel-logo">
+            <h1>FSK TERMINAL V1.0</h1>
+            <div class="role-selector">
+                <label>
+                    <input type="radio" name="role" value="sender" checked>
+                    [ SENDER ]
+                </label>
+                <label>
+                    <input type="radio" name="role" value="receiver">
+                    [ RECEIVER ]
+                </label>
+            </div>
+        </header>
+
+        <main>
+            <div class="connection-panel nes-container with-title">
+                <p class="title">CONNECTION</p>
+                <div class="baud-info">
+                    <span id="baud-display">BAUD: 9600 (Sender Default)</span>
+                </div>
+                <button id="connect-btn" class="nes-btn is-primary">CONNECT PORT</button>
+                <span id="connection-status" class="status-disconnected">DISCONNECTED</span>
+            </div>
+
+            <!-- SENDER UI -->
+            <div id="sender-ui" class="nes-container with-title active-ui">
+                <p class="title">TX CONTROL</p>
+                <div class="input-group">
+                    <input type="text" id="msg-input" class="nes-input" placeholder="Enter message..." autocomplete="off">
+                    <button id="send-btn" class="nes-btn is-success">SEND</button>
+                </div>
+                
+                <div class="logs-container">
+                    <div class="log-box nes-container is-dark with-title">
+                        <p class="title">TX HISTORY</p>
+                        <div id="tx-log" class="terminal-text"></div>
+                    </div>
+                    <div class="log-box nes-container is-dark with-title">
+                        <p class="title">ARDUINO RX DEBUG</p>
+                        <div id="rx-debug-log" class="terminal-text"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECEIVER UI -->
+            <div id="receiver-ui" class="nes-container with-title hidden">
+                <p class="title">RX MONITOR</p>
+                <button id="clear-btn" class="nes-btn is-error">CLEAR SCREEN</button>
+                <div class="log-box nes-container is-dark with-title main-rx">
+                    <p class="title">INCOMING DATA</p>
+                    <div id="rx-main-log" class="terminal-text large-text"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <img src="logo.png" alt="ITBA Logo" class="footer-logo">
+            <p>Created by Nicolás Beade & Javier Petrucci - Lab Elec II (25.16)</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
