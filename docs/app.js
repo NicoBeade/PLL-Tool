@@ -5,7 +5,9 @@ const unsupportedWarning = document.getElementById('unsupported-warning');
 const appContainer = document.getElementById('app-container');
 const btnSender = document.getElementById('btn-sender');
 const btnReceiver = document.getElementById('btn-receiver');
-const baudDisplay = document.getElementById('baud-display');
+const baudSenderContainer = document.getElementById('baud-sender-container');
+const baudReceiverContainer = document.getElementById('baud-receiver-container');
+const baudSelect = document.getElementById('baud-select');
 const connectBtn = document.getElementById('connect-btn');
 const connectionStatus = document.getElementById('connection-status');
 
@@ -52,7 +54,8 @@ function updateUiForRole(role) {
         senderUi.classList.remove('hidden');
         receiverUi.classList.add('hidden');
         receiverUi.classList.remove('active-ui');
-        baudDisplay.innerText = "BAUD: 9600 (Sender)";
+        baudSenderContainer.classList.remove('hidden');
+        baudReceiverContainer.classList.add('hidden');
     } else {
         btnReceiver.classList.add('is-success');
         btnSender.classList.remove('is-success');
@@ -60,7 +63,8 @@ function updateUiForRole(role) {
         receiverUi.classList.remove('hidden');
         senderUi.classList.add('hidden');
         senderUi.classList.remove('active-ui');
-        baudDisplay.innerText = "BAUD: 300 (Receiver)";
+        baudSenderContainer.classList.add('hidden');
+        baudReceiverContainer.classList.remove('hidden');
     }
 }
 
@@ -84,7 +88,7 @@ async function connect() {
     try {
         port = await navigator.serial.requestPort();
         const role = getRole();
-        const baudRate = role === 'sender' ? 9600 : 300;
+        const baudRate = role === 'sender' ? 9600 : parseInt(baudSelect.value, 10);
         
         await port.open({ baudRate: baudRate });
         
@@ -103,9 +107,10 @@ async function connect() {
             appendLogLine(rxMainLog, `<span style="color: #f1c40f;">--- CONNECTED @ ${baudRate} BAUD ---</span><br>`);
         }
 
-        // Disable role selection while connected
+        // Disable role selection and baud rate choice while connected
         btnSender.disabled = true;
         btnReceiver.disabled = true;
+        baudSelect.disabled = true;
 
         // Setup Output stream for sending
         const encoder = new TextEncoderStream();
@@ -145,6 +150,7 @@ async function disconnect() {
     connectionStatus.className = "status-disconnected";
     btnSender.disabled = false;
     btnReceiver.disabled = false;
+    baudSelect.disabled = false;
     
     const role = getRole();
     if (role === 'sender') {

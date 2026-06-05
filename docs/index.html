@@ -31,7 +31,27 @@
             <div class="connection-panel nes-container is-dark with-title is-centered top-box">
                 <p class="title">CONNECTION</p>
                 <div class="baud-info">
-                    <span id="baud-display">BAUD: 9600 (Sender)</span>
+                    <div id="baud-sender-container">
+                        <span id="baud-display">BAUD: 9600 (Sender)</span>
+                    </div>
+                    <div id="baud-receiver-container" class="hidden">
+                        <span class="baud-label">BAUD:</span>
+                        <div class="nes-select is-dark baud-select-wrapper">
+                            <select id="baud-select">
+                                <option value="300" selected>300</option>
+                                <option value="600">600</option>
+                                <option value="1200">1200</option>
+                                <option value="2400">2400</option>
+                                <option value="4800">4800</option>
+                                <option value="9600">9600</option>
+                                <option value="14400">14400</option>
+                                <option value="19200">19200</option>
+                                <option value="38400">38400</option>
+                                <option value="57600">57600</option>
+                                <option value="115200">115200</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="connect-group">
                     <button id="connect-btn" class="nes-btn is-primary">CONNECT</button>
